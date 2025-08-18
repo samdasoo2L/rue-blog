@@ -26,8 +26,13 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'nickname' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
+            'github_id' => null,
+            'github_token' => null,
+            'avatar' => null,
+            'bio' => fake()->optional(0.7)->sentence(),
+            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +44,18 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a GitHub user.
+     */
+    public function github(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'github_id' => fake()->unique()->numerify('########'),
+            'avatar' => fake()->imageUrl(200, 200, 'people'),
+            'password' => null,
         ]);
     }
 }
