@@ -1,0 +1,35 @@
+# name: Deploy to EC2
+
+# on:
+#   push:
+#     branches:
+#       - main # 또는 배포 브랜치
+
+# jobs:
+#   deploy:
+#     name: Deploy to EC2
+#     runs-on: ubuntu-latest
+
+#     # 각 step은 run 명령실행 또는 uses 액션사용 하나를 수행 , name은 워크플로우 화면에 표시되는 이름 (가독성)
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to EC2
+#         # 다른사람이 만들어놓은 액션 사용
+#         # up 컨테이너 생성 실행 . -d 백그라운드 실행 . --build 도커파일로부터 새 이미지 빌드(코드 변경됐을 경우)
+#         # -d 가 없으면 컨테이너 생성 후 종료되면 워크플로우 종료됨 / 터미널 닫아도 컨테이너 실행위해서는 -d 필요
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USER }}
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           script: |
+#             cd /home/ubuntu/rue-blog
+#             git pull origin main
+#             docker-compose down
+#             docker-compose up -d --build
+#             docker-compose exec -T app php artisan migrate --force
+#             docker-compose exec -T app php artisan config:cache
+#             docker-compose exec -T app php artisan route:cache
+#             docker-compose exec -T app php artisan view:cache

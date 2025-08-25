@@ -96,7 +96,7 @@ class AuthController extends Controller
             
             Auth::login($user);
 
-            return redirect()->route('home')->with('success', $githubUser->token . ' <- Token!!');
+            return redirect()->route('home')->with('success', 'GitHub 로그인이 완료되었습니다!');
         } catch (\Exception $e) {
             return redirect()->route('login')->withErrors(['error' => 'GitHub 로그인에 실패했습니다.']);
         }
