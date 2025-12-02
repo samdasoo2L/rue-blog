@@ -1,1 +1,1 @@
-RUE Blog.
+RUE Blog
